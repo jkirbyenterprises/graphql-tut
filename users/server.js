@@ -4,6 +4,15 @@ const schema = require('./schema/schema');
 
 const app = express();
 
+app.use('/graphql', expressGraphQL({
+  schema,
+  graphiql: true,
+}));
+
+app.listen(4000, () => {
+  console.log('Listening');
+});
+
 // Test Query
 // {
 //   user(id: "23") {
@@ -17,12 +26,63 @@ const app = express();
 //     }
 //   }
 // }
+// Multiple Root Queries
+// query fetchCompany {
+//   company(id: "2")
+//   {
+//     id,
+//     name,
+//     description
+//     users
+//     {
+//       id,
+//       firstName,
+//       age,
+//       company
+//       {
+//         name
+//       }
+//     }
+//   }
+// }
+// more complex
+// query fetchCompany{
+//   user(id:"23")
+//   {
+//     id,
+//     firstName,
+//     age
+//   }
+//   company(id: "2")
+//   {
+//     ...companyDetails,
+//     users
+//     {
+//       id,
+//       firstName,
+//       age
+//     }
+//   }
+//   anotherCompany: company(id: "1")
+//   {
+//     ...companyDetails,
+//   }
+// }
 
-app.use('/graphql', expressGraphQL({
-  schema,
-  graphiql: true,
-}));
+// fragment companyDetails on Company
+// {
+//   id,
+//   name,
+//   description
+// }
 
-app.listen(4000, () => {
-  console.log('Listening');
-});
+// add user mutation
+// mutation
+// {
+//   addUser(firstName: "Stephen", age: 26)
+//   {
+//     id,
+//     firstName,
+//     age
+//   }
+// }
