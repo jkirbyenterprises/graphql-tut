@@ -86,3 +86,33 @@ app.listen(4000, () => {
 //     age
 //   }
 // }
+// delete user mutation
+// mutation
+// {
+//   deleteUser(id: "MLqR8Fk")
+//   {
+//     id,
+//     firstName,
+//     age
+//   }
+// }
+// edit user mutation
+// mutation
+// {
+//   editUser(id:"0V3bUWn", firstName: "Steve", age: 27)
+//   {
+//     id,
+//     firstName,
+//     age
+//   }
+// }
+// edit user mutation (PATCH)
+// mutation
+// {
+//   editUser(id:"0V3bUWn", firstName: "Stephen")
+//   {
+//     id,
+//     firstName,
+//     age
+//   }
+// }

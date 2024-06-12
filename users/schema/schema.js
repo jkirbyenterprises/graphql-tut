@@ -1,5 +1,6 @@
 const graphql = require('graphql');
 const axios = require('axios');
+const { response } = require('express');
 
 const {
     GraphQLObjectType,
@@ -85,6 +86,45 @@ const mutation = new GraphQLObjectType({
             resolve(parentValue, args) {
                 const { firstName, age } = args;
                 return axios.post('http://localhost:3000/users', { firstName, age })
+                    .then(response => response.data);
+            }
+        },
+        deleteUser: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString)},
+            },
+            resolve(parentValue, args) {
+                axios.delete(`http://localhost:3000/users/${args.id}`, {})
+                    .then(response => response.data);
+            }
+        },
+        //replace with a PUT request (replaces all fields)
+        // editUser: {
+        //     type: UserType,
+        //     args: {
+        //         id: { type: new GraphQLNonNull(GraphQLString)},
+        //         firstName: { type: new GraphQLNonNull(GraphQLString) },
+        //         age: { type: new GraphQLNonNull(GraphQLInt) },
+        //         companyId: { type: GraphQLString },
+        //     },
+        //     resolve(parentValue, args) {
+        //         const { id, firstName, age, companyId } = args;
+        //         axios.put(`http://localhost:3000/users/${id}`, { firstName, age, companyId })
+        //             .then(response => response.data);
+        //     }
+        // }
+        // update provided fields with a PATCH request (replaces only provided fields)
+        editUser: {
+            type: UserType,
+            args: {
+                id: { type: new GraphQLNonNull(GraphQLString)},
+                firstName: { type: GraphQLString },
+                age: { type: GraphQLInt },
+                companyId: { type: GraphQLString },
+            },
+            resolve(parentValue, args) {
+                axios.patch(`http://localhost:3000/users/${args.id}`, args)
                     .then(response => response.data);
             }
         }
